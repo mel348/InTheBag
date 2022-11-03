@@ -23,7 +23,15 @@ namespace InTheBag
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddMemoryCache();
+            services.AddSession();
+            services.AddSession(options =>
+            {
+                //change idle timeout to 5 minutes - default is 20 minutes.
+                options.IdleTimeout = TimeSpan.FromSeconds(60 * 5);
+                options.Cookie.IsEssential = true; //default is false
+            });
+            services.AddControllersWithViews().AddNewtonsoftJson();  //so we can use the commands for NewtonsoftJson
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +53,8 @@ namespace InTheBag
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();                       //must go into Configure() above the UseEndpoints()
 
             app.UseEndpoints(endpoints =>
             {

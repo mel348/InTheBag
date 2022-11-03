@@ -1,0 +1,15 @@
+﻿@model Wishes
+@using Microsoft.AspNetCore.Http;
+
+@{
+    string myWishList = Context.Session.GetString("wish");                              //retrieve the string from the session data
+    Wishes wishlist = Newtonsoft.Json.JsonConvert.DeserializeObject<Wishes>(myWishList);//convert it back into an object(wishlist) and store it
+}                                                                                       <!--after that is done it can be accessed like any other object.-->
+<img src="~/Images/smoke.jpg" class="img-fluid" style="position:absolute;top:0px;left:0px;z-index:-1;width:100%;" />
+<div class="bg-light p-4 rounded-left" style="opacity:.8;width:50%;">
+    <ul> <!--<li> to access the wishes-->
+       <li>@wishlist.wish1</li>
+       <li>@wishlist.wish2</li>
+       <li>@wishlist.wish3</li>
+    </ul>
+</div>

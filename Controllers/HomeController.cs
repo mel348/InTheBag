@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using InTheBag.Models;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace InTheBag.Controllers
 {
@@ -20,6 +22,36 @@ namespace InTheBag.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult WishIndex()
+        {
+            Wishes myWishes = new Wishes  //create object and populate with some values
+                { ID = 1, wish1 = "Wisdom", 
+                  wish2 = "Health", 
+                  wish3 = "Happiness"};
+            string jsonWishes = JsonConvert.SerializeObject(myWishes); //Convert into a string using jsonConvert
+            HttpContext.Session.SetString("wish", jsonWishes);          //Store conversion of values as Session Data
+            return View();
+        }
+        
+        public IActionResult NewWishIndex()  //returns the view
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult NewWishIndex(Wishes model)  //brings in the model after user fills out the form and submits it.
+        {
+            Wishes myWishes = new Wishes  //create object and populate with some values
+            {
+                ID = 2,
+                wish1 = model.wish1,            //model.wish1 connect to the model to get what they entered.
+                wish2 = model.wish2,
+                wish3 = model.wish3,
+            };
+            string jsonWishes = JsonConvert.SerializeObject(myWishes); //Convert into a string using jsonConvert
+            HttpContext.Session.SetString("wish", jsonWishes);          //Store conversion of values as Session Data
+            return View("WishIndex");                                   //reroute to the wish index view to see wishes
         }
         public IActionResult IndexViewBag() 
         {
