@@ -61,7 +61,12 @@ namespace InTheBag
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+    
+            //You want the more specific and current endpoint to be below the default 
+                endpoints.MapControllerRoute(
+                    name: "genie2",
+                    pattern: "{controller=Genie}/{action=Create2}/{GenieName?}/{Age?}/{WishesGranted?}");
+                            });
         }
     }
 }

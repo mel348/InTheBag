@@ -39,7 +39,8 @@ namespace InTheBag.Controllers
         {
             return View();
         }
-        [HttpPost]
+        //ORIGINAL MODEL POST (Complext Data Type
+        /*[HttpPost]
         public IActionResult NewWishIndex(Wishes model)  //brings in the model after user fills out the form and submits it.
         {
             Wishes myWishes = new Wishes  //create object and populate with some values
@@ -48,6 +49,21 @@ namespace InTheBag.Controllers
                 wish1 = model.wish1,            //model.wish1 connect to the model to get what they entered.
                 wish2 = model.wish2,
                 wish3 = model.wish3,
+            };
+            string jsonWishes = JsonConvert.SerializeObject(myWishes); //Convert into a string using jsonConvert
+            HttpContext.Session.SetString("wish", jsonWishes);          //Store conversion of values as Session Data
+            return View("WishIndex");                                   //reroute to the wish index view to see wishes
+        }*/
+        //Request.Form (primitive type) HttpPost
+        [HttpPost]  
+        public IActionResult NewWishIndex(int? ID)              //Went from a strongly typed model to a more primitive type
+        { 
+            Wishes myWishes = new Wishes                        //create object and populate with some values
+            {
+                ID = 2,
+                wish1 = Request.Form["wish1"],                  //Normally name attributes, but since we use asp-for it uses the property name 
+                wish2 = Request.Form["wish2"],
+                wish3 = Request.Form["wish3"],
             };
             string jsonWishes = JsonConvert.SerializeObject(myWishes); //Convert into a string using jsonConvert
             HttpContext.Session.SetString("wish", jsonWishes);          //Store conversion of values as Session Data
